@@ -39,7 +39,7 @@ class EmployeeDataWidget(QWidget):
         self.layout.addWidget(self.export_button)
 
         # Timestamp label
-        self.status_label = QLabel(f"Selected folder: {os.getcwd()}")
+        self.status_label = QLabel(f"No data generated and No folder selected")
         self.layout.addWidget(self.status_label)
 
         self.setLayout(self.layout)
