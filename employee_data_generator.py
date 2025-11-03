@@ -44,7 +44,7 @@ class EmployeeDataWidget(QWidget):
 
         self.setLayout(self.layout)
         self.data = None
-        self.folder_path = os.getcwd()
+        self.folder_path = ""
 
     def select_folder(self):
         self.folder_path = QFileDialog.getExistingDirectory(self, "Select Folder")
