@@ -39,8 +39,8 @@ class EmployeeDataWidget(QWidget):
         self.layout.addWidget(self.export_button)
 
         # Timestamp label
-        self.custom_label = QLabel(f"Selected folder: {os.getcwd()}")
-        self.layout.addWidget(self.custom_label)
+        self.status_label = QLabel(f"Selected folder: {os.getcwd()}")
+        self.layout.addWidget(self.status_label)
 
         self.setLayout(self.layout)
         self.data = None
@@ -48,12 +48,14 @@ class EmployeeDataWidget(QWidget):
 
     def select_folder(self):
         self.folder_path = QFileDialog.getExistingDirectory(self, "Select Folder")
-        self.custom_label.setText(f"Selected folder: {self.folder_path}")
+        self.status_label.setText(f"Selected folder: {self.folder_path}")
 
     def generate_data(self):
         try:
-            self.custom_label.setText('Generating Data...')
+            self.status_label.setText('Generating Data...')
             num_rows = int(self.row_input.text())
+            if num_rows <= 0:
+                raise ValueError("Error: Number of rows must be greater than 0")
             self.data = pd.DataFrame({
                 "emp_id": [i+1 for i in range(num_rows)],
                 "full_name": [names.get_full_name() for _ in range(num_rows)],
@@ -62,17 +64,17 @@ class EmployeeDataWidget(QWidget):
                 "hire_date": self.hire_date_generator(num_rows)
             }).head(num_rows)
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            self.custom_label.setText(f"Generated Data: {timestamp}")
+            self.status_label.setText(f"Generated Data: {timestamp}")
         except ValueError:
-            self.custom_label.setText("Invalid number of records")
+            self.status_label.setText("Invalid number of records")
 
     def export_data(self):
         if self.data is not None and self.folder_path:
             file_path = f"{self.folder_path}/employees.xlsx"
             self.data.to_excel(file_path, index=False, sheet_name='Employees')
-            self.custom_label.setText(f"File Generated. Exported to Excel at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            self.status_label.setText(f"File Generated. Exported to Excel at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         else:
-            self.custom_label.setText("Error: No data or folder selected")
+            self.status_label.setText("Error: No data or folder selected")
 
     def hire_date_generator(self, num_rows):
         min_date = date(2020,1,1)
@@ -82,7 +84,7 @@ class EmployeeDataWidget(QWidget):
     
     def random_department(self, num_rows):
         departments = ["IT", "HR", "Operations","Administration" , "Finance"]
-        return [departments[random.randint(0,4)] for _ in range(num_rows)]
+        return [random.choice(departments) for _ in range(num_rows)]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
