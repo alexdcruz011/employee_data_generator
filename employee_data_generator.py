@@ -75,7 +75,7 @@ class EmployeeDataWidget(QWidget):
             self.custom_label.setText("Error: No data or folder selected")
 
     def hire_date_generator(self, num_rows):
-        min_date = date(2025,1,1)
+        min_date = date(2020,1,1)
         max_date = date.today()
         delta_days = max_date - min_date
         return [(min_date + timedelta(days=random.randint(0, delta_days.days))) for _ in range(num_rows)]
