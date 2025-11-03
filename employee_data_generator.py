@@ -1,5 +1,6 @@
 import sys
 import pandas as pd
+import numpy as np
 from datetime import (datetime, date, timedelta)
 from PySide6.QtWidgets import (
     QApplication, QWidget, QVBoxLayout,
@@ -58,7 +59,7 @@ class EmployeeDataWidget(QWidget):
                 "emp_id": [i+1 for i in range(num_rows)],
                 "full_name": [names.get_full_name() for _ in range(num_rows)],
                 "department": self.random_department(num_rows),
-                "salary": [random.randint(25000,120000) for _ in range(num_rows)],
+                "salary": [np.random.randint(25000,120001) for _ in range(num_rows)],
                 "hire_date": self.hire_date_generator(num_rows)
             }).head(num_rows)
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -82,11 +83,11 @@ class EmployeeDataWidget(QWidget):
         min_date = date(2020,1,1)
         max_date = date.today()
         delta_days = max_date - min_date
-        return [(min_date + timedelta(days=random.randint(0, delta_days.days))) for _ in range(num_rows)]
+        return [(min_date + timedelta(days=np.random.randint(0, delta_days.days+1))) for _ in range(num_rows)]
     
     def random_department(self, num_rows):
         departments = ["IT", "HR", "Operations","Administration" , "Finance"]
-        return [random.choice(departments) for _ in range(num_rows)]
+        return [np.random.choice(departments) for _ in range(num_rows)]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
