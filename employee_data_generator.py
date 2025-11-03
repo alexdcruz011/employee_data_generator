@@ -71,8 +71,12 @@ class EmployeeDataWidget(QWidget):
             file_path = f"{self.folder_path}/employees.xlsx"
             self.data.to_excel(file_path, index=False, sheet_name='Employees')
             self.status_label.setText(f"File Generated. Exported to Excel at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        else:
-            self.status_label.setText("Error: No data or folder selected")
+        elif self.data is None and self.folder_path == '':
+            self.status_label.setText("Error: No data generated and No folder selected")
+        elif self.data is None:
+            self.status_label.setText("Error: No data generated")
+        elif self.folder_path == '':
+            self.status_label.setText("Error: No folder selected")
 
     def hire_date_generator(self, num_rows):
         min_date = date(2020,1,1)
