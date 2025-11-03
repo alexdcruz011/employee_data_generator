@@ -54,8 +54,6 @@ class EmployeeDataWidget(QWidget):
         try:
             self.status_label.setText('Generating Data...')
             num_rows = int(self.row_input.text())
-            if num_rows <= 0:
-                raise ValueError("Error: Number of rows must be greater than 0")
             self.data = pd.DataFrame({
                 "emp_id": [i+1 for i in range(num_rows)],
                 "full_name": [names.get_full_name() for _ in range(num_rows)],
@@ -66,7 +64,7 @@ class EmployeeDataWidget(QWidget):
             timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             self.status_label.setText(f"Generated Data: {timestamp}")
         except ValueError:
-            self.status_label.setText("Invalid number of records")
+            self.status_label.setText("Error: Number of rows must be a number greater than 0")
 
     def export_data(self):
         if self.data is not None and self.folder_path:
